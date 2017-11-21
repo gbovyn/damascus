@@ -2,6 +2,7 @@ package com.liferay.damascus.cli.common
 
 import com.beust.jcommander.ParameterException
 import com.fasterxml.jackson.databind.JsonMappingException
+import com.liferay.damascus.cli.CreateCommand
 import com.liferay.damascus.cli.json.DamascusBase
 import com.liferay.damascus.cli.test.tools.TestUtils
 import org.apache.commons.io.FileUtils
@@ -12,6 +13,7 @@ class JsonUtilTest extends Specification {
     static def DS = DamascusProps.DS;
 	static def SEP = "/";
     static def workTempDir = TestUtils.getTempPath() + "damascustest";
+    static def workspaceName = "workspace"
 
     def template_path = DamascusProps.TEMPLATE_FOLDER_NAME;
     def resource_path = SEP + template_path + SEP + DamascusProps.VERSION_70 + SEP
@@ -23,6 +25,18 @@ class JsonUtilTest extends Specification {
         FileUtils.forceMkdir(new File(workTempDir))
         FileUtils.deleteDirectory(new File(DamascusProps.CACHE_DIR_PATH));
         FileUtils.forceMkdir(new File(DamascusProps.CACHE_DIR_PATH))
+
+        //Cleanup enviroment
+        FileUtils.deleteDirectory(new File(workTempDir));
+        TemplateUtil.getInstance().clear();
+
+        //Create Workspace
+        CommonUtil.createWorkspace(workTempDir, workspaceName);
+
+        //Execute all tests under modules
+        workTempDir = workTempDir + DS + workspaceName + DS + "modules";
+
+        TestUtils.setFinalStatic(CreateCommand.class.getDeclaredField("CREATE_TARGET_PATH"), workTempDir + DS);
     }
 
     @Unroll("JSON Read Smoke test")
@@ -93,6 +107,10 @@ class JsonUtilTest extends Specification {
         when:
         def target_file_path = workTempDir + DS + DamascusProps.BASE_JSON
         def out_file_path = workTempDir + DS + "output.server.xml"
+
+        // Once clear _cfg to initialize with an actual test target template directory
+        //TemplateUtil.getInstance().clear()
+
         def dmsb = TestUtils.createBaseJsonMock(projectName, liferayVersion, packageName, target_file_path)
         dmsb.applications.get(0).asset = null
         JsonUtil.writer(out_file_path,dmsb)

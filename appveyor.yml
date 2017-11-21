@@ -1,5 +1,7 @@
 version: "{branch} {build}"
-os: Windows Server 2012
+os: Windows Server 2012 R2
+clone_depth: 2
+max_jobs: 1
 environment:
   matrix:
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
@@ -8,7 +10,8 @@ build:
   verbosity: detailed
 
 build_script:
-  - gradlew.bat assemble --info --no-daemon
+  - gradlew --no-daemon --version
+  - gradlew assemble --no-daemon
 
 test_script:
   - gradlew.bat test --info --no-daemon
@@ -17,9 +20,11 @@ branches:
   only:
     - master
     - development
+    - feature/fix_test
 
 cache:
   - C:\Users\appveyor\.gradle
+  - C:\Users\appveyor\.damascus
 
 matrix:
   fast_finish: true
