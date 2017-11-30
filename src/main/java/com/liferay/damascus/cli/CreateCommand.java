@@ -78,7 +78,10 @@ public class CreateCommand implements ICommand {
      * @param destinationDir Destination dir where the project is created.
      * @throws Exception
      */
-    private void generateProjectSkeleton(String projectName, String packageName, String destinationDir) throws Exception {
+    private void generateProjectSkeleton(String projectName, String packageName, String destinationDir, boolean generateMvc) 
+        throws Exception {
+
+        System.out.println("Generating *-api and *-service skeletons for " + projectName);
 
         //Generate Service (*-service, *-api) skelton
         CommonUtil.createServiceBuilderProject(
@@ -87,12 +90,16 @@ public class CreateCommand implements ICommand {
             destinationDir
         );
 
+        System.out.println("Generating *-web skeletons for " + projectName);
+
         //Generate Web project (*-web)
-        CommonUtil.createMVCPortletProject(
-            projectName,
-            packageName,
-            destinationDir + DamascusProps.DS + projectName
-        );
+        if (generateMvc) {
+            CommonUtil.createMVCPortletProject(
+                projectName,
+                packageName,
+                destinationDir + DamascusProps.DS + projectName
+            );
+        }
     }
 
     /**
@@ -220,13 +227,12 @@ public class CreateCommand implements ICommand {
                 dashCaseProjectName
             );
 
-            System.out.println("Generating *-api, *-service, *-web skeletons for " + dashCaseProjectName);
-
             // Generate skeletons of the project
             generateProjectSkeleton(
                 dashCaseProjectName,
                 dmsb.getPackageName(),
-                CREATE_TARGET_PATH
+                CREATE_TARGET_PATH,
+                dmsb.isGenerateWeb()
             );
 
             System.out.println("Parsing " + serviceXmlPath);
@@ -247,6 +253,9 @@ public class CreateCommand implements ICommand {
 
                 //Process all templates
                 for (File template : templatePaths) {
+                    if (!dmsb.isGenerateWeb() && template.getName().contains("WEB")) {
+                        continue;
+                    }
                     System.out.print(".");
                     generateScaffolding(dmsb, template.getName(), null, app);
                 }

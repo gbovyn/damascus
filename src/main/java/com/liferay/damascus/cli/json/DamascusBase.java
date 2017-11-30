@@ -3,7 +3,6 @@ package com.liferay.damascus.cli.json;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -33,6 +32,9 @@ public class DamascusBase {
 
     @JsonProperty(required = true)
     public String liferayVersion;
+
+    @JsonProperty(required = true)
+    public boolean generateWeb;
 
     public Map<String, String> customValue;
 

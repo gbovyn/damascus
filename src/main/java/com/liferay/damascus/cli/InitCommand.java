@@ -100,6 +100,8 @@ public class InitCommand implements ICommand {
         params.put(DamascusProps.BASE_LIFERAY_VERSION, getLiferayVersion());
         params.put(DamascusProps.BASE_PACKAGE_NAME, getPackageName());
         params.put(DamascusProps.BASE_PROJECT_NAME_LOWER, StringUtils.lowerCase(getProjectName()));
+        params.put(DamascusProps.BASE_GENERATE_WEB, isGenerateWeb());
+
         Map damascus = com.beust.jcommander.internal.Maps.newHashMap();
         damascus.put(DamascusProps.BASE_DAMASCUS_OBJ, params);
 
@@ -115,4 +117,6 @@ public class InitCommand implements ICommand {
     @Parameter(names = "-v", description = "Target Liferay Version. (e.g. 70)", validateWith = VersionValidator.class)
     private String liferayVersion = DamascusProps.VERSION_70;
 
+    @Parameter(names = "-web", description = "Generate web portlet. (default: true)", arity = 1)
+    private boolean generateWeb = true;
 }

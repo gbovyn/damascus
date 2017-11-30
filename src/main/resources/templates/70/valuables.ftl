@@ -1,5 +1,7 @@
 <#assign void><#-- Just to prevent unexpected whitespace or lien breaks -->
 
+<#assign generateWeb = damascus.generateWeb>
+
 <#assign packageName = "${damascus.packageName}">
 <#assign packagePath = "${packageName?replace(\".\", \"/\")}">
 <#assign packageSnake = "${packageName?replace(\".\", \"_\")}">

@@ -2,6 +2,7 @@
   "projectName": "${damascus.projectName}",
   "packageName" : "${damascus.packageName}",
   "liferayVersion": "${damascus.liferayVersion}",
+  "generateWeb": "${damascus.generateWeb?c}",
   "applications": [
     {
       "model"       : "${damascus.projectName}",

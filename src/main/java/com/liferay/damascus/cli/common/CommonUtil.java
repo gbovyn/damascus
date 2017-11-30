@@ -311,7 +311,7 @@ public class CommonUtil {
     static public List<String> invertPathToList(String path) throws IOException {
         File pathTmp = getDirFromPath(new File(path));
         String separator = (isWindows()) ? "\\\\" : DamascusProps.DS;
-        List<String> retList = Arrays.asList(pathTmp.getAbsolutePath().toString().split(separator));
+        List<String> retList = Arrays.asList(pathTmp.getAbsolutePath().split(separator));
         return Lists.reverse(retList);
     }
 

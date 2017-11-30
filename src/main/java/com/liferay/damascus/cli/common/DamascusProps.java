@@ -50,6 +50,8 @@ public class DamascusProps {
 
     public static final String BASE_PROJECT_NAME_LOWER = "projectNameLower";
 
+    public static final String BASE_GENERATE_WEB = "generateWeb";
+
     /**
      * Property file configuration
      */
